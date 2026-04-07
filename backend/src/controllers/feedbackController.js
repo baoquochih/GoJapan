@@ -14,10 +14,12 @@ export const createFeedback = async (req, res) => {
              VALUES (?, ?, ?, ?, ?)`,
             [user_id || null, rating, category, description, image_data || null]
         );
+        console.log('Feedback inserted with ID:', result.insertId);
         res.status(201).json({ message: 'Feedback submitted successfully!', id: result.insertId });
     } catch (err) {
-        console.error('Error creating feedback:', err);
-        res.status(500).json({ error: 'Failed to submit feedback.' });
+        console.error('Error creating feedback - Code:', err.code, '| Message:', err.message);
+        console.error('Full error:', err);
+        res.status(500).json({ error: 'Failed to submit feedback.', detail: err.message });
     }
 };
 
@@ -41,8 +43,12 @@ export const getFeedbacks = async (req, res) => {
         `);
         res.json(rows);
     } catch (err) {
-        console.error('Error fetching feedbacks:', err);
-        res.status(500).json({ error: 'Failed to fetch feedbacks.' });
+        console.error('Error fetching feedbacks - Code:', err.code, '| Message:', err.message);
+        // Nếu bảng chưa tồn tại thì trả về mảng rỗng thay vì lỗi 500
+        if (err.code === 'ER_NO_SUCH_TABLE') {
+            return res.json([]);
+        }
+        res.status(500).json({ error: 'Failed to fetch feedbacks.', detail: err.message });
     }
 };
 

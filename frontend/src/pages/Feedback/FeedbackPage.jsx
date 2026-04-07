@@ -185,10 +185,12 @@ export default function FeedbackPage() {
       setCategory(CATEGORIES[1]);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3500);
-      setTimeout(() => loadFeed(), 1000);
+      // Reload feed sau 800ms để cập nhật dữ liệu mới nhất từ server
+      setTimeout(() => loadFeed(), 800);
     } catch (e) {
       console.error('Feedback submit error:', e);
-      alert('Failed to submit. Please try again.');
+      const detail = e?.response?.data?.detail || e?.response?.data?.error || e?.message || 'Unknown error';
+      alert(`Failed to submit feedback.\n\nError: ${detail}`);
     } finally {
       setSubmitting(false);
     }
