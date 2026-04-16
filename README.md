@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌸 GoJapan — Japanese Learning Web Application
 
 > A modern, aesthetic, community-inspired platform for learning Japanese — drawing inspiration from **Duolingo** and **Monkeytype**. Built as a full-stack web application for Special Subject 2 (SS2) Final Project.
@@ -303,3 +304,6 @@ The app is fully responsive across all screen sizes:
 ## 👥 Contributors
 
 Built with ❤️ as a Final Project for Special Subject 2 (SS2).
+=======
+# GoJapan
+>>>>>>> 63aa07168edd87f73f00cd45f5d0cb5467610fb3
