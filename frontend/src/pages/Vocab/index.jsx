@@ -13,7 +13,7 @@ const units = [
 
 const WordCard = ({ word, romaji, meaning }) => (
   <div 
-    onClick={() => window.open(`https://mazii.net/vi-VN/search/word/${encodeURIComponent(word)}`, '_blank')}
+    onClick={() => window.open(`https://mazii.net/vi-VN/search/word/${word}`, '_blank')}
     className="p-5 border-b border-[#303030] last:border-b-0 space-y-3 hover:bg-white/[0.02] transition-colors cursor-pointer"
   >
     <div className="text-[38px] font-sans text-white leading-tight mb-1">{word}</div>
@@ -139,7 +139,7 @@ export default function VocabularyPage() {
             <div className="text-[#a0a0a0] text-[15px] leading-relaxed mt-4 pl-8 space-y-1">
               <p>This is the place where you can learn and practice the most common words used in day-to-day Japanese.</p>
               <p>To begin, select at least 1 level, select your training mode, then hit Go! below and start training!</p>
-              <p className="mt-2 text-[#ccc]">Mẹo: click vào một từ để tra nghĩa chi tiết trên <a href="https://mazii.net/vi-VN" target="_blank" rel="noopener noreferrer" className="underline cursor-pointer hover:text-white">Mazii</a>!</p>
+              <p className="mt-2 text-[#ccc]">New: click on a word to find out more about it on <a href="https://mazii.net/vi-VN" target="_blank" rel="noopener noreferrer" className="underline cursor-pointer hover:text-white">Mazii</a>!</p>
             </div>
           )}
         </div>

@@ -122,9 +122,9 @@ function FeedCard({ post, onUpvote }) {
 
 export default function FeedbackPage() {
   const [tab, setTab] = useState('form');
-  const [rating, setRating] = useState('love');
-  const [category, setCategory] = useState(CATEGORIES[1]);
-  const [description, setDescription] = useState('');
+  const [rating, setRating] = useState(() => localStorage.getItem('fb_draft_rating') || 'love');
+  const [category, setCategory] = useState(() => localStorage.getItem('fb_draft_category') || CATEGORIES[1]);
+  const [description, setDescription] = useState(() => localStorage.getItem('fb_draft_description') || '');
   const [imageData, setImageData] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -134,6 +134,12 @@ export default function FeedbackPage() {
   const fileRef = useRef();
 
   const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+  useEffect(() => {
+    localStorage.setItem('fb_draft_rating', rating);
+    localStorage.setItem('fb_draft_category', category);
+    localStorage.setItem('fb_draft_description', description);
+  }, [rating, category, description]);
 
   const loadFeed = async () => {
     setLoadingFeed(true);
@@ -183,14 +189,15 @@ export default function FeedbackPage() {
       setImagePreview(null);
       setRating('love');
       setCategory(CATEGORIES[1]);
+      localStorage.removeItem('fb_draft_rating');
+      localStorage.removeItem('fb_draft_category');
+      localStorage.removeItem('fb_draft_description');
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3500);
-      // Reload feed sau 800ms để cập nhật dữ liệu mới nhất từ server
-      setTimeout(() => loadFeed(), 800);
+      setTimeout(() => loadFeed(), 1000);
     } catch (e) {
       console.error('Feedback submit error:', e);
-      const detail = e?.response?.data?.detail || e?.response?.data?.error || e?.message || 'Unknown error';
-      alert(`Failed to submit feedback.\n\nError: ${detail}`);
+      alert('Failed to submit. Please try again.');
     } finally {
       setSubmitting(false);
     }

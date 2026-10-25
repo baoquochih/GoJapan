@@ -237,8 +237,12 @@ export const googleLogin = async (req, res) => {
         delete user.PasswordHash;
         res.json({ message: "Google Login successful", user, accessToken, refreshToken });
     } catch (error) {
-        console.error("Google login error:", error);
-        res.status(500).json({ message: "Google login verification failed" });
+        console.error("Google login error:", error.response ? error.response.data : error.message);
+        res.status(500).json({ 
+            message: "Google login verification failed", 
+            error: error.response ? error.response.data : error.message,
+            stack: error.stack
+        });
     }
 };
 

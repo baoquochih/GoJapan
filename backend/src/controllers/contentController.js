@@ -54,17 +54,27 @@ export const getLessonById = async (req, res) => {
 export const getVocab = async (req, res) => {
     try {
         const lessonId = req.query.lessonId || req.query.lessonID || req.query.lesson_id || req.query.LessonID;
-        console.log(`GET /vocab - Filter: lessonId=${lessonId}`);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 50; 
+        const offset = (page - 1) * limit;
+        console.log(`GET /vocab - Filter: lessonId=${lessonId}, page=${page}, limit=${limit}`);
 
         let query = 'SELECT * FROM vocabulary';
+        let countQuery = 'SELECT COUNT(*) as total FROM vocabulary';
         const params = [];
         
         if (lessonId) {
             query += ' WHERE LessonID = ?';
+            countQuery += ' WHERE LessonID = ?';
             params.push(lessonId);
         }
         
-        const [vocab] = await db.query(query, params);
+        const [countResult] = await db.query(countQuery, params);
+        const total = countResult[0].total;
+
+        query += ' LIMIT ? OFFSET ?';
+        
+        const [vocab] = await db.query(query, [...params, limit, offset]);
         console.log(`GET /vocab - Found ${vocab.length} rows`);
 
         // Extra help: if empty but lessonId was provided, check if lesson exists/type mismatch
@@ -73,12 +83,21 @@ export const getVocab = async (req, res) => {
             if (lesson.length > 0 && lesson[0].Type !== 'Vocabulary') {
                 return res.json({
                     message: `Lesson ${lessonId} exists but its type is '${lesson[0].Type}', not 'Vocabulary'.`,
-                    data: []
+                    data: [],
+                    pagination: { total: 0, page, limit, totalPages: 0 }
                 });
             }
         }
 
-        res.json(vocab);
+        res.json({
+            data: vocab,
+            pagination: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
+            }
+        });
     } catch (error) {
         console.error("Error fetching vocabulary:", error);
         res.status(500).json({ message: error.message });
@@ -89,17 +108,27 @@ export const getVocab = async (req, res) => {
 export const getKanji = async (req, res) => {
     try {
         const lessonId = req.query.lessonId || req.query.lessonID || req.query.lesson_id || req.query.LessonID;
-        console.log(`GET /kanji - Filter: lessonId=${lessonId}`);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 50; 
+        const offset = (page - 1) * limit;
+        console.log(`GET /kanji - Filter: lessonId=${lessonId}, page=${page}, limit=${limit}`);
 
         let query = 'SELECT * FROM kanji';
+        let countQuery = 'SELECT COUNT(*) as total FROM kanji';
         const params = [];
         
         if (lessonId) {
             query += ' WHERE LessonID = ?';
+            countQuery += ' WHERE LessonID = ?';
             params.push(lessonId);
         }
         
-        const [kanji] = await db.query(query, params);
+        const [countResult] = await db.query(countQuery, params);
+        const total = countResult[0].total;
+
+        query += ' LIMIT ? OFFSET ?';
+
+        const [kanji] = await db.query(query, [...params, limit, offset]);
         console.log(`GET /kanji - Found ${kanji.length} rows`);
 
         // Extra help: if empty but lessonId was provided
@@ -108,12 +137,21 @@ export const getKanji = async (req, res) => {
             if (lesson.length > 0 && lesson[0].Type !== 'Kanji') {
                 return res.json({
                     message: `Lesson ${lessonId} exists but its type is '${lesson[0].Type}', not 'Kanji'.`,
-                    data: []
+                    data: [],
+                    pagination: { total: 0, page, limit, totalPages: 0 }
                 });
             }
         }
 
-        res.json(kanji);
+        res.json({
+            data: kanji,
+            pagination: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
+            }
+        });
     } catch (error) {
         console.error("Error fetching kanji:", error);
         res.status(500).json({ message: error.message });
@@ -124,17 +162,27 @@ export const getKanji = async (req, res) => {
 export const getKana = async (req, res) => {
     try {
         const lessonId = req.query.lessonId || req.query.lessonID || req.query.lesson_id || req.query.LessonID;
-        console.log(`GET /kana - Filter: lessonId=${lessonId}`);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 50; 
+        const offset = (page - 1) * limit;
+        console.log(`GET /kana - Filter: lessonId=${lessonId}, page=${page}, limit=${limit}`);
 
         let query = 'SELECT * FROM kana';
+        let countQuery = 'SELECT COUNT(*) as total FROM kana';
         const params = [];
         
         if (lessonId) {
             query += ' WHERE LessonID = ?';
+            countQuery += ' WHERE LessonID = ?';
             params.push(lessonId);
         }
         
-        const [kana] = await db.query(query, params);
+        const [countResult] = await db.query(countQuery, params);
+        const total = countResult[0].total;
+
+        query += ' LIMIT ? OFFSET ?';
+        
+        const [kana] = await db.query(query, [...params, limit, offset]);
         console.log(`GET /kana - Found ${kana.length} rows`);
 
         // Extra help: if empty but lessonId was provided
@@ -143,12 +191,21 @@ export const getKana = async (req, res) => {
             if (lesson.length > 0 && lesson[0].Type !== 'Kana') {
                 return res.json({
                     message: `Lesson ${lessonId} exists but its type is '${lesson[0].Type}', not 'Kana'.`,
-                    data: []
+                    data: [],
+                    pagination: { total: 0, page, limit, totalPages: 0 }
                 });
             }
         }
 
-        res.json(kana);
+        res.json({
+            data: kana,
+            pagination: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
+            }
+        });
     } catch (error) {
         console.error("Error fetching kana:", error);
         res.status(500).json({ message: error.message });

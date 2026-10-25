@@ -1,4 +1,5 @@
 import express from 'express';
+import { cacheMiddleware } from '../middlewares/cacheMiddleware.js';
 import { 
     getQuestions, 
     getQuizzes, 
@@ -11,11 +12,11 @@ import {
 const router = express.Router();
 
 // List available quizzes, item can be filtered by lessonId (e.g. /api/questions)
-router.get('/', getQuizzes);
+router.get('/', cacheMiddleware, getQuizzes);
 
 // Get questions for a specific quiz (e.g. /api/questions/1 or /api/questions/1/questions)
-router.get('/:quizId', getQuestions);
-router.get('/:quizId/questions', getQuestions);
+router.get('/:quizId', cacheMiddleware, getQuestions);
+router.get('/:quizId/questions', cacheMiddleware, getQuestions);
 
 // Admin Routes for Quizzes
 router.post('/', createQuiz);

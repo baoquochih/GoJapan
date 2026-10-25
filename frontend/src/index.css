@@ -112,13 +112,46 @@ html:not(.has-custom-bg) .min-h-screen {
   background-color: var(--bg-color) !important; 
 }
 
-/* Inner containers (Vocab units, Kana rows) get slightly lighter to stand out naturally against any theme */
-html:not(.has-custom-bg) .bg-\[\#1f1f1f\], 
-html:not(.has-custom-bg) .bg-\[\#111\] { 
-  background-color: rgba(255, 255, 255, 0.04) !important; 
-  border: 1px solid rgba(255, 255, 255, 0.03) !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
+/* Inner containers and structural background hex colors unify globally to the theme */
+html:not(.has-custom-bg) .bg-\[\#141414\],
+html:not(.has-custom-bg) .bg-\[\#151515\],
+html:not(.has-custom-bg) .bg-\[\#1a1a1a\],
+html:not(.has-custom-bg) .bg-\[\#1f1f1f\],
+html:not(.has-custom-bg) .bg-\[\#050505\],
+html:not(.has-custom-bg) .bg-\[\#111111\],
+html:not(.has-custom-bg) .bg-\[\#222222\],
+html:not(.has-custom-bg) .bg-\[\#111\],
+html:not(.has-custom-bg) .bg-\[\#222\],
+html:not(.has-custom-bg) .bg-\[\#242424\],
+html:not(.has-custom-bg) .bg-\[\#252525\],
+html:not(.has-custom-bg) .bg-\[\#303030\] { 
+  background-color: color-mix(in srgb, var(--text-color) 4%, var(--bg-color)) !important; 
+  border: 1px solid color-mix(in srgb, var(--text-color) 8%, transparent) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;
   border-radius: 1rem;
+}
+
+/* Ensure text on these backgrounds adapts dynamically */
+html .text-\[\#888\],
+html .text-\[\#666\],
+html .text-\[\#555\],
+html .text-\[\#777\],
+html .text-\[\#999\],
+html .text-\[\#aaa\],
+html .text-\[\#bbb\],
+html .text-\[\#ccc\],
+html .text-\[\#ddd\],
+html .text-\[\#eee\],
+html .text-\[\#a0a0a0\] {
+  color: color-mix(in srgb, var(--text-color) 60%, transparent) !important;
+}
+
+/* Ensure structural borders adapt to the active theme */
+html .border-\[\#303030\],
+html .border-\[\#333\],
+html .border-\[\#444\],
+html .border-\[\#222\] {
+  border-color: color-mix(in srgb, var(--text-color) 8%, transparent) !important;
 }
 
 /* All primary action buttons globally adapt to the Theme's Accent color with a Monkeytype 3D pill feel */
@@ -171,8 +204,18 @@ html .text-white, html .text-\[\#e5e5e5\] {
 
 /* Custom Wallpaper Glassmorphism Enhancements */
 html.has-custom-bg .bg-black, 
+html.has-custom-bg .bg-\[\#141414\],
+html.has-custom-bg .bg-\[\#151515\],
+html.has-custom-bg .bg-\[\#1a1a1a\],
 html.has-custom-bg .bg-\[\#1f1f1f\], 
+html.has-custom-bg .bg-\[\#050505\],
+html.has-custom-bg .bg-\[\#111111\],
+html.has-custom-bg .bg-\[\#222222\],
 html.has-custom-bg .bg-\[\#111\],
+html.has-custom-bg .bg-\[\#222\],
+html.has-custom-bg .bg-\[\#242424\],
+html.has-custom-bg .bg-\[\#252525\],
+html.has-custom-bg .bg-\[\#303030\],
 html.has-custom-bg .theme-container {
     background-color: rgba(10, 10, 10, 0.45) !important; /* Elegant translucent dark glass */
     backdrop-filter: blur(16px) !important; /* Premium heavy blur behind components */
@@ -201,5 +244,32 @@ html.has-custom-bg aside.theme-container {
   .custom-scrollbar {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+  }
+
+  /* Custom animations for Landing Page */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slowPan {
+    0% { background-position: 50% 0%; }
+    50% { background-position: 50% 100%; }
+    100% { background-position: 50% 0%; }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0; /* Ensures element hides before animation starts */
+  }
+
+  .animate-slow-pan {
+    animation: slowPan 60s ease-in-out infinite;
   }
 }

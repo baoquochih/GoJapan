@@ -4,16 +4,16 @@ import { Home, RefreshCw, Trophy, Clock, Target, Timer, Zap, ChevronLeft, ChartB
 
 const StatCard = ({ icon: Icon, label, value, color, delay }) => (
   <div 
-    className="bg-[#141414] rounded-2xl border border-white/5 p-6 transition-all hover:border-white/20 animate-slideUp"
+    className="bg-[#141414] rounded-2xl border border-white/5 p-4 sm:p-6 transition-all hover:border-white/20 animate-slideUp"
     style={{ animationDelay: `${delay}ms` }}
   >
     <div className="flex items-center gap-3 mb-4">
-      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
+      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${color}`}>
         <Icon size={18} className="text-white" />
       </div>
-      <span className="text-gray-400 font-bold uppercase tracking-widest text-xs">{label}</span>
+      <span className="text-gray-400 font-bold uppercase tracking-widest text-[10px] sm:text-xs leading-tight">{label}</span>
     </div>
-    <div className="text-4xl font-black text-white">{value}</div>
+    <div className="text-2xl sm:text-4xl font-black text-white">{value}</div>
   </div>
 );
 
@@ -38,25 +38,25 @@ export default function TrainingStats() {
       <div className="max-w-4xl mx-auto">
         
         {/* Header Section */}
-        <div className="flex items-center justify-between mb-16">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-16">
            <div className="flex items-center gap-3 animate-fadeIn">
-              <Trophy size={48} className="text-yellow-500" />
+              <Trophy size={48} className="text-yellow-500 min-w-[48px]" />
               <div>
-                 <h1 className="text-4xl font-black tracking-tight tracking-tight">Great Job!</h1>
+                 <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Great Job!</h1>
                  <p className="text-gray-500 font-bold mb-0">{lessonTitle} Completed</p>
               </div>
            </div>
            
-           <div className="text-right">
+           <div className="text-left sm:text-right">
               <span className="text-gray-500 text-xs font-bold uppercase tracking-widest block mb-2">Lesson Type</span>
-              <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 font-black text-lg">
+              <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 font-black text-lg inline-block sm:block">
                  {type}
               </div>
            </div>
         </div>
 
         {/* Global Stats Bar */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
            <StatCard 
               icon={Clock} 
               label="Training Time" 
@@ -88,7 +88,7 @@ export default function TrainingStats() {
         </div>
 
         {/* Detailed Grid Stats */}
-        <div className="grid grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
             <div className="space-y-6">
                <h3 className="text-gray-500 font-bold uppercase tracking-widest text-sm mb-4">Speed Metrics</h3>
                <div className="space-y-4">
@@ -133,9 +133,9 @@ export default function TrainingStats() {
         </div>
 
         {/* Actions Button */}
-        <div className="flex gap-6 animate-fadeIn" style={{ animationDelay: '600ms' }}>
+        <div className="flex flex-col sm:flex-row gap-6 animate-fadeIn" style={{ animationDelay: '600ms' }}>
            <button 
-             onClick={() => navigate('/')}
+             onClick={() => navigate(type ? `/${type.toLowerCase()}` : '/')}
              className="flex-1 py-6 rounded-2xl bg-[#141414] border border-white/5 text-white font-bold text-xl hover:bg-white/5 hover:border-white/10 transition-all flex items-center justify-center gap-3"
            >
              <Home size={24} />

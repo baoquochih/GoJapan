@@ -205,7 +205,7 @@ export default function StatsTab() {
             </button>
          </div>
 
-         <div className="flex flex-col sm:flex-row gap-4 mb-6">
+         <div className="flex flex-col lg:flex-row gap-4 mb-6">
             {/* XP */}
             <div className="flex-1 bg-[#1a1a1a] border border-white/5 rounded-2xl p-4 flex items-center gap-4">
                <div className="w-12 h-12 rounded-2xl bg-[#141414] border border-white/5 flex items-center justify-center text-[#555]">
@@ -260,12 +260,12 @@ export default function StatsTab() {
          
          {/* Character Mastery */}
          <div className="bg-[#141414] border border-white/5 rounded-2xl p-6">
-            <div className="flex justify-between items-start mb-6">
+            <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-6">
                <div>
                  <h3 className="text-white text-[18px] font-bold">Character Mastery</h3>
                  <p className="text-[#666] text-[13px]">Your learning progress at a glance</p>
                </div>
-               <div className="flex bg-[#1a1a1a] p-1 rounded-full border border-white/5">
+               <div className="flex flex-wrap bg-[#1a1a1a] p-1 rounded-xl sm:rounded-full border border-white/5 gap-1 xl:gap-0">
                  <button onClick={() => setMasteryFilter('All')} className={`px-5 py-1.5 rounded-full text-[13px] font-bold ${masteryFilter === 'All' ? 'bg-white text-black shadow-md' : 'text-[#888] hover:text-white hover:bg-white/5 transition-colors'}`}>All</button>
                  <button onClick={() => setMasteryFilter('Kana')} className={`px-4 py-1.5 rounded-full text-[13px] font-bold ${masteryFilter === 'Kana' ? 'bg-white text-black shadow-md' : 'text-[#888] hover:text-white hover:bg-white/5 transition-colors'}`}>Kana</button>
                  <button onClick={() => setMasteryFilter('Kanji')} className={`px-4 py-1.5 rounded-full text-[13px] font-bold ${masteryFilter === 'Kanji' ? 'bg-white text-black shadow-md' : 'text-[#888] hover:text-white hover:bg-white/5 transition-colors'}`}>Kanji</button>
@@ -273,7 +273,7 @@ export default function StatsTab() {
                </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                <div>
                  <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 rounded-full bg-[#555]" />
@@ -294,16 +294,16 @@ export default function StatsTab() {
                </div>
             </div>
 
-            <div className="flex gap-2">
-               <div className="flex items-center gap-2 bg-[#1a1a1a] border border-white/5 rounded-full px-4 py-1.5">
+            <div className="flex flex-wrap gap-2">
+               <div className="flex items-center gap-2 bg-[#1a1a1a] border border-white/5 rounded-full px-4 py-1.5 w-max">
                   <div className="w-2 h-2 rounded-full bg-yellow-500" />
                   <span className="text-[#888] text-[13px]">0 Mastered</span>
                </div>
-               <div className="flex items-center gap-2 bg-[#1a1a1a] border border-white/5 rounded-full px-4 py-1.5">
+               <div className="flex items-center gap-2 bg-[#1a1a1a] border border-white/5 rounded-full px-4 py-1.5 w-max">
                   <div className="w-2 h-2 rounded-full bg-white/40" />
                   <span className="text-[#888] text-[13px]">0 Learning</span>
                </div>
-               <div className="flex items-center gap-2 bg-[#1a1a1a] border border-white/5 rounded-full px-4 py-1.5">
+               <div className="flex items-center gap-2 bg-[#1a1a1a] border border-white/5 rounded-full px-4 py-1.5 w-max">
                   <div className="w-2 h-2 rounded-full bg-[#333]" />
                   <span className="text-[#888] text-[13px]">0 Needs Practice</span>
                </div>
@@ -329,7 +329,7 @@ export default function StatsTab() {
                </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                <div className="bg-[#1a1a1a] border border-white/5 rounded-xl p-4 flex gap-3 items-center">
                   <div className="w-1.5 h-10 rounded-full bg-yellow-500" />
                   <div>
@@ -357,7 +357,7 @@ export default function StatsTab() {
          {/* Blitz */}
          <div className="bg-[#141414] border border-white/5 rounded-2xl p-6 relative overflow-hidden group min-h-[160px]">
             <Zap size={150} className="absolute -bottom-8 -right-8 text-white/5 group-hover:text-white/10 transition-colors pointer-events-none" />
-            <div className="flex justify-between items-start relative z-10 w-full">
+            <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 relative z-10 w-full">
                <div className="flex gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-[#1a1a1a] border border-white/5 flex items-center justify-center shadow-inner">
                      <Zap size={22} className="text-[#888]" />
@@ -367,7 +367,7 @@ export default function StatsTab() {
                      <p className="text-[#666] text-[13px]">Speed challenge stats</p>
                   </div>
                </div>
-               <div className="flex bg-[#1a1a1a] p-1 rounded-full border border-white/5">
+               <div className="flex flex-wrap bg-[#1a1a1a] p-1 rounded-xl sm:rounded-full border border-white/5 gap-1 xl:gap-0">
                  <button onClick={() => setBlitzFilter('Kana')} className={`px-5 py-1.5 rounded-full text-[13px] font-bold ${blitzFilter === 'Kana' ? 'bg-white text-black shadow-md' : 'text-[#888] hover:text-white hover:bg-white/5 transition-colors'}`}>Kana</button>
                  <button onClick={() => setBlitzFilter('Kanji')} className={`px-4 py-1.5 rounded-full text-[13px] font-bold ${blitzFilter === 'Kanji' ? 'bg-white text-black shadow-md' : 'text-[#888] hover:text-white hover:bg-white/5 transition-colors'}`}>Kanji</button>
                  <button onClick={() => setBlitzFilter('Vocab')} className={`px-4 py-1.5 rounded-full text-[13px] font-bold ${blitzFilter === 'Vocab' ? 'bg-white text-black shadow-md' : 'text-[#888] hover:text-white hover:bg-white/5 transition-colors'}`}>Vocab</button>

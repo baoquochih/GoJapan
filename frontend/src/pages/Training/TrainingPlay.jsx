@@ -6,7 +6,7 @@ import { getQuestions, saveTrainingStats } from '../../api/learningApi';
 export default function TrainingPlay() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { quizId, quizIds, sessionId, mode, lessonTitle, type, playType = 'classic', difficulty, blitzTime } = location.state || {};
+  const { quizId, quizIds, sessionId, mode, lessonTitle, type, playType = 'classic', difficulty, blitzTime, selectedRows } = location.state || {};
 
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,7 +52,20 @@ export default function TrainingPlay() {
               allQuestions = [...allQuestions, ...data.questions];
            }
         }
+
+        // Apply Kana filters if they exist
+        if (type === 'Kana' && selectedRows && selectedRows.length > 0) {
+           const validRomajis = selectedRows.flatMap(row => row.split(' • ').map(s => s.trim()));
+           allQuestions = allQuestions.filter(q => validRomajis.includes(q.Romaji) || validRomajis.includes(q.Character));
+        }
+
         allQuestions.sort(() => Math.random() - 0.5);
+        
+        // If filtering results in empty, fallback or alert
+        if (allQuestions.length === 0) {
+           console.warn("No questions matched the selected rows filter.");
+        }
+        
         setQuestions(allQuestions);
       } catch (error) {
         console.error("Error fetching questions:", error);

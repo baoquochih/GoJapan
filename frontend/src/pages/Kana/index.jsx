@@ -94,7 +94,7 @@ export default function KanaPage() {
   const navigate = useNavigate();
   const [welcomeOpen, setWelcomeOpen] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [dbLessonId, setDbLessonId] = useState(null);
+  const [dbLessonIds, setDbLessonIds] = useState([]);
 
   useEffect(() => {
     // Fetch lessons to just have a valid lesson ID for the game flow
@@ -102,7 +102,7 @@ export default function KanaPage() {
       try {
         const data = await getLessons({ type: 'Kana' });
         if (data && data.length > 0) {
-          setDbLessonId(data[0].LessonID);
+          setDbLessonIds(data.map(l => l.LessonID));
         }
       } catch (error) {
         console.error("Failed to fetch kana lessons:", error);
@@ -148,8 +148,8 @@ export default function KanaPage() {
       alert("Please select at least 1 set of characters.");
       return;
     }
-    if (dbLessonId) {
-      navigate('/training/setup', { state: { lessonId: dbLessonId, type: 'Kana', playType } });
+    if (dbLessonIds.length > 0) {
+      navigate('/training/setup', { state: { lessonIds: dbLessonIds, type: 'Kana', playType, selectedRows } });
     } else {
       alert("Still loading learning data, please try again in a moment.");
     }

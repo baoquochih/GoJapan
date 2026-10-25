@@ -4,11 +4,11 @@ import axiosInstance from './axiosInstance';
  * GET /api/kana
  * @param {string|number} lessonId - Optional lesson identifier
  */
-export const getKana = async (lessonId) => {
+export const getKana = async (lessonId, page, limit) => {
   const response = await axiosInstance.get('/kana', {
-    params: { lessonId }
+    params: { lessonId, page, limit }
   });
-  return response.data;
+  return Array.isArray(response.data) ? response.data : (response.data.data || []);
 };
 
 /**
@@ -24,22 +24,22 @@ export const getLessons = async (params = {}) => {
  * GET /api/kanji
  * @param {string|number} lessonId - Optional lesson identifier
  */
-export const getKanji = async (lessonId) => {
+export const getKanji = async (lessonId, page, limit) => {
   const response = await axiosInstance.get('/kanji', {
-    params: { lessonId }
+    params: { lessonId, page, limit }
   });
-  return response.data;
+  return Array.isArray(response.data) ? response.data : (response.data.data || []);
 };
 
 /**
  * GET /api/vocab
  * @param {string|number} lessonId - Optional lesson identifier
  */
-export const getVocab = async (lessonId) => {
+export const getVocab = async (lessonId, page, limit) => {
   const response = await axiosInstance.get('/vocab', {
-    params: { lessonId }
+    params: { lessonId, page, limit }
   });
-  return response.data;
+  return Array.isArray(response.data) ? response.data : (response.data.data || []);
 };
 
 /**

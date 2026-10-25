@@ -1,21 +1,28 @@
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import React, { Suspense } from 'react';
 import MainLayout from "./components/layout/MainLayout";
-import HomePage from "./pages/Home";
-import Kana from "./pages/Kana";
-import Vocab from "./pages/Vocab";
-import Kanji from "./pages/Kanji";
-import ProgressPage from './pages/Progress/index.jsx';
-import LoginPage from "./pages/Authentication/LoginPage";
-import SignUpPage from "./pages/Authentication/SignUpPage";
 import { useAuth } from "./context/AuthContext";
 import GlobalEffects from "./components/effects/GlobalEffects";
-import PreferencesPage from "./pages/Preferences/PreferencesPage";
-import FeedbackPage from "./pages/Feedback/FeedbackPage";
 
-// Training Pages — rendered outside MainLayout for true full-screen
-import TrainingSetup from "./pages/Training/TrainingSetup";
-import TrainingPlay from "./pages/Training/TrainingPlay";
-import TrainingStats from "./pages/Training/TrainingStats";
+// Lazy Loaded Pages
+const HomePage = React.lazy(() => import("./pages/Home"));
+const Kana = React.lazy(() => import("./pages/Kana"));
+const Vocab = React.lazy(() => import("./pages/Vocab"));
+const Kanji = React.lazy(() => import("./pages/Kanji"));
+const ProgressPage = React.lazy(() => import('./pages/Progress/index.jsx'));
+const LoginPage = React.lazy(() => import("./pages/Authentication/LoginPage"));
+const SignUpPage = React.lazy(() => import("./pages/Authentication/SignUpPage"));
+const PreferencesPage = React.lazy(() => import("./pages/Preferences/PreferencesPage"));
+const FeedbackPage = React.lazy(() => import("./pages/Feedback/FeedbackPage"));
+const TrainingSetup = React.lazy(() => import("./pages/Training/TrainingSetup"));
+const TrainingPlay = React.lazy(() => import("./pages/Training/TrainingPlay"));
+const TrainingStats = React.lazy(() => import("./pages/Training/TrainingStats"));
+
+const SuspenseFallback = () => (
+  <div className="min-h-screen bg-black flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+  </div>
+);
 
 // Route wrapper: redirect to login if not authenticated
 function ProtectedRoute({ children }) {
@@ -65,18 +72,22 @@ function AppContent() {
 
   if (isHome) {
     return (
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
+      <Suspense fallback={<SuspenseFallback />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </Suspense>
     );
   }
 
   if (isAuth) {
     return (
-      <Routes>
-        <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
-        <Route path="/register" element={<GuestRoute><SignUpPage /></GuestRoute>} />
-      </Routes>
+      <Suspense fallback={<SuspenseFallback />}>
+        <Routes>
+          <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
+          <Route path="/register" element={<GuestRoute><SignUpPage /></GuestRoute>} />
+        </Routes>
+      </Suspense>
     );
   }
 
@@ -84,11 +95,13 @@ function AppContent() {
   if (isTraining) {
     return (
       <ProtectedRoute>
-        <Routes>
-          <Route path="/training/setup" element={<TrainingSetup />} />
-          <Route path="/training/play" element={<TrainingPlay />} />
-          <Route path="/training/stats" element={<TrainingStats />} />
-        </Routes>
+        <Suspense fallback={<SuspenseFallback />}>
+          <Routes>
+            <Route path="/training/setup" element={<TrainingSetup />} />
+            <Route path="/training/play" element={<TrainingPlay />} />
+            <Route path="/training/stats" element={<TrainingStats />} />
+          </Routes>
+        </Suspense>
       </ProtectedRoute>
     );
   }
@@ -96,14 +109,16 @@ function AppContent() {
   return (
     <ProtectedRoute>
       <MainLayout>
-        <Routes>
-          <Route path="/kana" element={<Kana />} />
-          <Route path="/vocab" element={<Vocab />} />
-          <Route path="/kanji" element={<Kanji />} />
-          <Route path="/progress" element={<ProgressPage />} />
-          <Route path="/preferences" element={<PreferencesPage />} />
-          <Route path="/feedback" element={<FeedbackPage />} />
-        </Routes>
+        <Suspense fallback={<SuspenseFallback />}>
+          <Routes>
+            <Route path="/kana" element={<Kana />} />
+            <Route path="/vocab" element={<Vocab />} />
+            <Route path="/kanji" element={<Kanji />} />
+            <Route path="/progress" element={<ProgressPage />} />
+            <Route path="/preferences" element={<PreferencesPage />} />
+            <Route path="/feedback" element={<FeedbackPage />} />
+          </Routes>
+        </Suspense>
       </MainLayout>
     </ProtectedRoute>
   );

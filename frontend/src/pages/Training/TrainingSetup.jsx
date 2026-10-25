@@ -9,7 +9,7 @@ export default function TrainingSetup() {
   const navigate = useNavigate();
   const { user } = useAuth();
   
-  const { lessonId, lessonIds, type, playType = 'classic' } = location.state || {};
+  const { lessonId, lessonIds, type, playType = 'classic', selectedRows } = location.state || {};
   const activeLessonIds = lessonIds || (lessonId ? [lessonId] : []);
   
   const [lesson, setLesson] = useState(null);
@@ -77,7 +77,8 @@ export default function TrainingSetup() {
           type,
           playType,
           difficulty: playType === 'gauntlet' ? difficulty : null,
-          blitzTime: playType === 'blitz' ? blitzTime : null
+          blitzTime: playType === 'blitz' ? blitzTime : null,
+          selectedRows
         } 
       });
     } catch (error) {

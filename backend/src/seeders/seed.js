@@ -12,9 +12,14 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const dbConfig = {
     host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT.trim(), 10) : 4000,
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'password',
-    database: process.env.DB_NAME || 'japanese_learning_db'
+    password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : 'password',
+    database: process.env.DB_NAME || 'japanese_learning_db',
+    ssl: {
+        minVersion: 'TLSv1.2',
+        rejectUnauthorized: true
+    }
 };
 
 // Hàm chia nhỏ mảng thành các phần bằng nhau (mỗi phần 20 items)
