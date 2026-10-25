@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
-import ReactFacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import FacebookLogin from '@greatsumini/react-facebook-login';
 import logo from '../../assets/images/logo.png';
 
 export default function LoginPage() {
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const facebookAccessTokenRef = useRef(null);
   const navigate = useNavigate();
   const { login, loginWithGoogle, loginWithFacebook } = useAuth();
 
@@ -29,19 +30,31 @@ export default function LoginPage() {
     onError: () => setError('Google Login Failed')
   });
 
-  const responseFacebook = async (response) => {
-    if (response.accessToken) {
-      setIsLoading(true);
-      try {
-        await loginWithFacebook(response.accessToken, response.email, response.name);
-        navigate('/');
-      } catch (err) {
-        setError(err.response?.data?.message || 'Facebook Login failed.');
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
+  const handleFacebookSuccess = (response) => {
+    const accessToken = response?.accessToken || response?.authResponse?.accessToken;
+    if (!accessToken) {
       setError('Facebook Login Failed');
+      return;
+    }
+
+    facebookAccessTokenRef.current = accessToken;
+  };
+
+  const handleFacebookProfileSuccess = async (profile) => {
+    const accessToken = facebookAccessTokenRef.current;
+    if (!accessToken) {
+      setError('Facebook Login Failed');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await loginWithFacebook(accessToken, profile?.email || '', profile?.name || '');
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Facebook Login failed.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -195,15 +208,17 @@ export default function LoginPage() {
               </svg>
               Google
             </button>
-            <ReactFacebookLogin
-              appId="958891499997923" // Dummy App ID
+            <FacebookLogin
+              appId="958891499997923"
               autoLoad={false}
-              scope="public_profile"
-              fields="name,picture"
-              callback={responseFacebook}
-              render={renderProps => (
+              scope="public_profile,email"
+              fields="name,email,picture"
+              onSuccess={handleFacebookSuccess}
+              onProfileSuccess={handleFacebookProfileSuccess}
+              onFail={() => setError('Facebook Login Failed')}
+              render={({ onClick }) => (
                 <button 
-                  onClick={renderProps.onClick} 
+                  onClick={onClick} 
                   disabled={isLoading}
                   className="flex-1 flex items-center justify-center gap-2.5 bg-[#1e1e1e]/50 border border-white/5 rounded-2xl py-4 text-white text-[14px] font-bold hover:bg-[#252525] hover:border-white/10 transition-all group disabled:opacity-50"
                 >
