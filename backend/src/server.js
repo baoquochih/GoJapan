@@ -59,6 +59,7 @@ const allowedOrigins = [
     'https://gojapan.abc-xyz.tech',
     'https://go-japan-fsnk.vercel.app',
     'https://go-japan-fsnk-2gf3tg8k2-baoquochih.vercel.app',
+    'https://go-japan-fsnk-ox5x025g0-baoquochih.vercel.app',
     'http://localhost:5173',
     'http://localhost:3000',
     'http://127.0.0.1:5173',
