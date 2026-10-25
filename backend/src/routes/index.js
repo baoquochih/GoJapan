@@ -9,6 +9,14 @@ import chatRoutes from './chatRoutes.js';
 
 const router = express.Router();
 
+router.get('/hello', (req, res) => {
+    res.json({
+        ok: true,
+        message: 'hello from backend',
+        timestamp: new Date().toISOString()
+    });
+});
+
 // Mount individual route modules onto their specific paths
 router.use('/auth', authRoutes);
 router.use('/questions', questionRoutes);
