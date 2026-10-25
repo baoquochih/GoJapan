@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const defaultDbConfig = {
+const dbConfig = {
     host: 'gateway01.ap-northeast-1.prod.aws.tidbcloud.com',
     port: 4000,
     user: '2s71eTPtXqr9hqJ.root',
@@ -12,11 +12,11 @@ const defaultDbConfig = {
 };
 
 const pool = mysql.createPool({
-    host: (process.env.DB_HOST ?? defaultDbConfig.host).trim(),
-    port: Number(process.env.DB_PORT ?? defaultDbConfig.port),
-    user: (process.env.DB_USER ?? defaultDbConfig.user).trim(),
-    password: (process.env.DB_PASSWORD ?? defaultDbConfig.password).trim(),
-    database: (process.env.DB_NAME ?? defaultDbConfig.database).trim(),
+    host: dbConfig.host,
+    port: dbConfig.port,
+    user: dbConfig.user,
+    password: dbConfig.password,
+    database: dbConfig.database,
     ssl: {
         minVersion: 'TLSv1.2',
         rejectUnauthorized: true
