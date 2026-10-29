@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { loginUser, registerUser, logoutUser, getUserProfile, googleLoginApi, facebookLoginApi } from '../api/authApi';
+import { loginUser, registerUser, logoutUser, getUserProfile } from '../api/authApi';
 
 const AuthContext = createContext(null);
 
@@ -46,24 +46,6 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const loginWithGoogle = async (token) => {
-    const data = await googleLoginApi(token);
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    setUser(data.user);
-    return data;
-  };
-
-  const loginWithFacebook = async (accessToken, email, name) => {
-    const data = await facebookLoginApi(accessToken, email, name);
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    setUser(data.user);
-    return data;
-  };
-
   const logout = async () => {
     try {
       const refreshToken = localStorage.getItem('refreshToken');
@@ -89,8 +71,6 @@ export function AuthProvider({ children }) {
     loading,
     login,
     register,
-    loginWithGoogle,
-    loginWithFacebook,
     logout,
     isAuthenticated: !!user,
   };

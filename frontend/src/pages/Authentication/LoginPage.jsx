@@ -36,7 +36,6 @@ export default function LoginPage() {
       setError('Facebook Login Failed');
       return;
     }
-
     facebookAccessTokenRef.current = accessToken;
   };
 
@@ -46,7 +45,6 @@ export default function LoginPage() {
       setError('Facebook Login Failed');
       return;
     }
-
     setIsLoading(true);
     try {
       await loginWithFacebook(accessToken, profile?.email || '', profile?.name || '');

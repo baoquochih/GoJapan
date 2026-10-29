@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ModeCard from "../../components/common/ModeCard";
 import bgImage from "../../assets/images/kanji-bg.png";
 import logo from "../../assets/images/logo.png";
@@ -32,6 +32,7 @@ const HomePage = () => {
   const { isAuthenticated, logout } = useAuth();
   const { preferences, updatePreference } = usePreferences();
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,12 +43,13 @@ const HomePage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToDojos = () => {
-    const el = document.getElementById("dojos");
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top, behavior: "smooth" });
+  const handleStartTraining = () => {
+    if (isAuthenticated) {
+      navigate('/kana');
+      return;
     }
+
+    navigate('/login');
   };
 
   return (
@@ -137,7 +139,7 @@ const HomePage = () => {
 
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full sm:w-auto animate-fade-in-up" style={{ animationDelay: '300ms' }}>
             <button 
-              onClick={scrollToDojos}
+              onClick={handleStartTraining}
               className="w-full sm:w-auto px-8 py-4 text-sm font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3"
               style={{ backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
             >
@@ -156,7 +158,7 @@ const HomePage = () => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity cursor-pointer animate-bounce" onClick={scrollToDojos} style={{ color: 'var(--text-color)' }}>
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity cursor-pointer animate-bounce" onClick={handleStartTraining} style={{ color: 'var(--text-color)' }}>
           <span className="text-xs uppercase tracking-widest font-medium">Scroll</span>
           <ChevronDown className="w-5 h-5" />
         </div>
