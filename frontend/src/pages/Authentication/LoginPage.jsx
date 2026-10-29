@@ -27,7 +27,11 @@ export default function LoginPage() {
         setIsLoading(false);
       }
     },
-    onError: () => setError('Google Login Failed')
+    onError: (error) => {
+      console.error('Google OAuth Error:', error);
+      const msg = error?.error || error?.error_description || 'unknown';
+      setError(`Google Login Failed: ${msg}`);
+    }
   });
 
   const handleFacebookSuccess = (response) => {
