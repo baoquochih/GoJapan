@@ -209,7 +209,7 @@ export default function LoginPage() {
               Google
             </button>
             <FacebookLogin
-              appId="958891499997923"
+              appId={import.meta.env.VITE_FB_APP_ID || "958891499997923"}
               autoLoad={false}
               scope="public_profile,email"
               fields="name,email,picture"

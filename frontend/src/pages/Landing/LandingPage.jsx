@@ -156,7 +156,7 @@ export default function LandingPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleCTA = () => navigate(isAuthenticated ? "/home" : "/register");
+  const handleCTA = () => navigate(isAuthenticated ? "/kana" : "/register");
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden relative">
@@ -206,7 +206,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             {isAuthenticated ? (
-              <button onClick={() => navigate("/home")}
+              <button onClick={() => navigate("/kana")}
                 className="px-5 py-2 rounded-xl bg-white text-black text-sm font-bold hover:bg-gray-100 transition-all active:scale-95">
                 Open App
               </button>

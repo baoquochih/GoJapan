@@ -231,7 +231,7 @@ export default function SignUpPage() {
                 <span className="text-[12px] font-bold text-[#666] group-hover:text-white transition-colors tracking-widest uppercase">Google</span>
              </button>
              <FacebookLogin
-                appId="958891499997923"
+                appId={import.meta.env.VITE_FB_APP_ID || "958891499997923"}
                 autoLoad={false}
                 scope="public_profile,email"
                 fields="name,email,picture"
