@@ -1,9 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Eye, EyeOff, ArrowLeft, Loader2, CheckCircle } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useGoogleLogin } from '@react-oauth/google';
-import FacebookLogin from '@greatsumini/react-facebook-login';
 import logo from '../../assets/images/logo.png';
 
 export default function SignUpPage() {
@@ -12,52 +10,8 @@ export default function SignUpPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const facebookAccessTokenRef = useRef(null);
   const navigate = useNavigate();
-  const { register, loginWithGoogle, loginWithFacebook } = useAuth();
-
-  const handleGoogleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      setIsLoading(true);
-      try {
-        await loginWithGoogle(tokenResponse.access_token);
-        navigate('/');
-      } catch (err) {
-        setError(err.response?.data?.message || 'Google signup failed.');
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    onError: () => setError('Google signup failed')
-  });
-
-  const handleFacebookSuccess = (response) => {
-    const accessToken = response?.accessToken || response?.authResponse?.accessToken;
-    if (!accessToken) {
-      setError('Facebook signup failed');
-      return;
-    }
-
-    facebookAccessTokenRef.current = accessToken;
-  };
-
-  const handleFacebookProfileSuccess = async (profile) => {
-    const accessToken = facebookAccessTokenRef.current;
-    if (!accessToken) {
-      setError('Facebook signup failed');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      await loginWithFacebook(accessToken, profile?.email || '', profile?.name || '');
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Facebook signup failed.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -219,37 +173,6 @@ export default function SignUpPage() {
               )}
             </button>
           </form>
-
-          {/* Social Access */}
-          <div className="grid grid-cols-2 gap-4 mt-8">
-             <button 
-                onClick={() => handleGoogleLogin()}
-                disabled={isLoading}
-                type="button"
-                className="flex items-center justify-center gap-2 bg-[#1a1a1a] border border-white/5 py-4 rounded-2xl hover:bg-[#222] transition-all group disabled:opacity-50"
-             >
-                <span className="text-[12px] font-bold text-[#666] group-hover:text-white transition-colors tracking-widest uppercase">Google</span>
-             </button>
-             <FacebookLogin
-                appId="958891499997923"
-                autoLoad={false}
-                scope="public_profile,email"
-                fields="name,email,picture"
-                onSuccess={handleFacebookSuccess}
-                onProfileSuccess={handleFacebookProfileSuccess}
-                onFail={() => setError('Facebook signup failed')}
-                render={({ onClick }) => (
-                  <button 
-                    onClick={onClick}
-                    disabled={isLoading}
-                    type="button"
-                    className="flex items-center justify-center gap-2 bg-[#1a1a1a] border border-white/5 py-4 rounded-2xl hover:bg-[#222] transition-all group disabled:opacity-50"
-                  >
-                    <span className="text-[12px] font-bold text-[#666] group-hover:text-white transition-colors tracking-widest uppercase">Facebook</span>
-                  </button>
-                )}
-             />
-          </div>
 
           {/* Redirect */}
           <div className="mt-10 text-center">
