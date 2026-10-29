@@ -22,7 +22,10 @@ export default function LoginPage() {
         await loginWithGoogle(tokenResponse.access_token);
         navigate('/');
       } catch (err) {
-        setError(err.response?.data?.message || 'Google Login failed.');
+        console.error('Backend /auth/google error:', err.response?.status, err.response?.data, err.message);
+        const backendMsg = err.response?.data?.message || err.response?.data?.error;
+        const status = err.response?.status;
+        setError(backendMsg ? `[${status}] ${backendMsg}` : (err.message || 'Google Login failed.'));
       } finally {
         setIsLoading(false);
       }
